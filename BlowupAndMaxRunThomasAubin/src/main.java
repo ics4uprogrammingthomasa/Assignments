@@ -1,16 +1,24 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+
+
+
+// Add file reading ability
+import java.io.*;
+
 
 public class main {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField textFieldFileLocation;
+	private JTextField textFieldItemAmount;
 
 	/**
 	 * Launch the application.
@@ -48,29 +56,60 @@ public class main {
 		JButton btnGetData = new JButton("Get Data");
 		btnGetData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Start Main Program
+				// Fetch data from text file
 				GetData();
 			}
 		});
-		btnGetData.setBounds(173, 96, 89, 23);
+		btnGetData.setBounds(172, 115, 89, 23);
 		frame.getContentPane().add(btnGetData);
 		
-		textField = new JTextField();
-		textField.setBounds(157, 48, 118, 23);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldFileLocation = new JTextField();
+		textFieldFileLocation.setBounds(258, 45, 118, 23);
+		frame.getContentPane().add(textFieldFileLocation);
+		textFieldFileLocation.setColumns(10);
 		
 		JLabel lblPleaseInputData = new JLabel("Please Input Data File Name Below");
-		lblPleaseInputData.setBounds(137, 11, 188, 23);
+		lblPleaseInputData.setBounds(236, 11, 188, 23);
 		frame.getContentPane().add(lblPleaseInputData);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(60, 175, 37, 15);
-		frame.getContentPane().add(btnNewButton);
+		JLabel lblPleaseInputItem = new JLabel("Please Input Item Amount");
+		lblPleaseInputItem.setBounds(34, 15, 135, 14);
+		frame.getContentPane().add(lblPleaseInputItem);
+		
+		textFieldItemAmount = new JTextField();
+		textFieldItemAmount.setBounds(44, 46, 109, 20);
+		frame.getContentPane().add(textFieldItemAmount);
+		textFieldItemAmount.setColumns(10);
 	}
 	
 	// Once 'Get Data' button is pressed
 	private void GetData() {
+		String fileName;
+		String[] line = new String[10];
 		
+		fileName = textFieldFileLocation.getText() + ".txt";
+		
+		try {
+			FileReader fileReader = new FileReader(fileName);
+			
+			BufferedReader bufferedReader = new BufferedReader(fileReader);	
+			
+			int x = 0;
+			while((line[x] = bufferedReader.readLine()) != null) {
+                x++;
+            }  
+			
+			bufferedReader.close();
+		}
+		catch(FileNotFoundException ex) {
+			System.out.println("Please input a proper text file name");
+		}
+		catch(IOException ex) {
+			System.out.println("There was an error reading the text document, this file may be corrupted");
+		}
+		
+		for(int y = 0; y < 10; y++) {
+			System.out.println(line[y]);
+		}
 	}
 }
