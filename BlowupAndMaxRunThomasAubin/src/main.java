@@ -21,9 +21,11 @@ public class main {
 	
 
 	private JFrame frame;
-	JLabel lblOutput;
 	private JTextField textFieldFileLocation;
 	private JTextField textFieldItemAmount;
+	
+	// Declare variables
+	JLabel lblOutput;
 
 	/**
 	 * Launch the application.
@@ -97,39 +99,49 @@ public class main {
 	
 	// Once 'Get Data' button is pressed
 	private void GetData() {
-		String line[];
+		// Declare variables
+		String data[];
 		String fileName;
 		String fileLength ;
+		int goodData = 1;
+		
+		fileName = textFieldFileLocation.getText() + ".txt";
 		
 		fileLength = textFieldItemAmount.getText();
 		
-		line = new String[Integer.parseInt(fileLength)];
-		
-		fileName = textFieldFileLocation.getText() + ".txt";
+		data = new String[Integer.parseInt(fileLength)];
 		
 		try {
 			FileReader fileReader = new FileReader(fileName);
 			
 			BufferedReader bufferedReader = new BufferedReader(fileReader);	
 			
-			int x = 0;
-			while((line[x] = bufferedReader.readLine()) != null) {
-                x++;
+			for(int x = 0; x < Integer.parseInt(fileLength); x++) {
+				data[x] = bufferedReader.readLine();
             }  
 			
 			bufferedReader.close();
 		}
 		catch(FileNotFoundException ex) {
-			lblOutput.setText("Please input a proper text file name");
+			lblOutput.setText("File not found!");
+			goodData = 0;
 		}
 		catch(IOException ex) {
-			System.out.println("There was an error reading the text document, this file may be corrupted");
+			lblOutput.setText("There was an error reading the text document, this file may be corrupted");
+			goodData = 0;
+		}
+
+		if (data[data.length-1] == null) {
+			lblOutput.setText("You have too many items");
+			goodData = 0;
 		}
 		
-		for(int y = 0; y < 10; y++) {
-			System.out.println(line[y]);
+		//for(int y = 0; y < data.length; y++) {
+			//System.out.println(data[y]);
+		//}
+		
+		if (goodData == 1) {
+			lblOutput.setText("Successfully loaded " + data.length + " data packs");
 		}
-		
-		
 	}
 }
