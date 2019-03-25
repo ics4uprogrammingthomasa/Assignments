@@ -90,10 +90,26 @@ public class main {
 	
 	private void Blowup(String data) {	
 		char[] chars = data.toCharArray();
+		String dataOutput = "";
 		
-		for (int i = 0; i <= chars.length; i++) {
+		for (int i = 0; i < chars.length; i++) {
+			String singleLetter = Character.toString(chars[i]);
 			
+			if (singleLetter.matches("[1234567890]")) {
+				try {
+					for(int b = 0; b < Character.getNumericValue(chars[i]); b++) {
+						dataOutput = dataOutput + chars[i+1];
+					}
+				}
+				catch(Exception e) {
+				}
+			}
+			else {
+				dataOutput = dataOutput + chars[i];
+			}
 		}
+		
+		System.out.println(dataOutput);
 	}
 	
 	private void MaxRun(String data) {
