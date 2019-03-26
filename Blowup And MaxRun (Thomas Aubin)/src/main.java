@@ -114,10 +114,20 @@ public class main {
 	
 	private void MaxRun(String data) {
 		char[] chars = data.toCharArray();
+		char[] wordCount = new char[0];
+		int[] valueCount = new int[0];
+		
+		for (int i = 0; i < chars.length-1; i++){
+			if (chars[i] == chars[i+1]) {
+				valueCount[valueCount.length+1] = i;
+				wordCount[wordCount.length+1] = chars[i];
+			}
+		}
+		
 	}
 	
 	private void FetchData() {		
-        String fileName = "DataBlowup.txt";
+        String fileName = "DataMaxRun.txt";
 
         String line = null;
 
