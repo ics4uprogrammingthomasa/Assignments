@@ -114,13 +114,18 @@ public class main {
 	
 	private void MaxRun(String data) {
 		char[] chars = data.toCharArray();
-		char[] wordCount = new char[0];
-		int[] valueCount = new int[0];
+		char[] word = new char[1];
+		int counter = 0;
+		int[] counts = new int[1];
 		
 		for (int i = 0; i < chars.length-1; i++){
 			if (chars[i] == chars[i+1]) {
-				valueCount[valueCount.length+1] = i;
-				wordCount[wordCount.length+1] = chars[i];
+				counter++;
+			}
+			else {
+				counts[counts.length] = counter;
+				counter = 0;
+				word[word.length] = chars[i];
 			}
 		}
 		
