@@ -19,11 +19,24 @@ import java.awt.event.ActionEvent;
 
 // Add list library
 import java.util.*;
+// Add text file management library
+import java.io.*;
+
 
 public class main {
 	
 	// Declare public variables
 	List<String> data = new ArrayList<String>();
+	String fileOutput = "Output.txt";
+	
+	// Martian Time Print Lists
+	List<Integer> printMarsDays = new ArrayList<Integer>();
+	List<Integer> printMarsHours = new ArrayList<Integer>();
+	List<Integer> printMarsMinutes = new ArrayList<Integer>();
+	List<Integer> printMarsSeconds = new ArrayList<Integer>();
+	
+	// Willow's Wild Ride Print Lists
+	List<Integer> printDaysLate = new ArrayList<Integer>();
 
 	private JFrame frame;
 
@@ -97,7 +110,7 @@ public class main {
 	}
 	
 	private void fetchData() {
-		String fileName = "Martian Time.txt";
+		String fileName = "Willow's Wild Ride.txt";
 
         String line = null;
         data.clear();
@@ -180,6 +193,7 @@ public class main {
 		int counter = 0;
 		int daysLate = 0;
 		
+		
 		// If data has nothing in it
 		if (data.size() == 0) {
 			// Tell user to load data first
@@ -218,14 +232,32 @@ public class main {
 				daysLate += playDays * boxes;
 			}
 			
-			System.out.println(daysLate);
+			printDaysLate.add(daysLate);
 			
 			data.subList(0, dueDate+1).clear();
 			if (data.size() > 0) {
 				WillowsWildRide();
 			}
-		}
+			else {	
+				try {
+		            FileWriter fileWriter = new FileWriter(fileOutput);
+
+		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		            for (int i = 0; i < printDaysLate.size(); i++) {
+		            	bufferedWriter.write(String.valueOf(printDaysLate.get(i)));
+			            
+		            	bufferedWriter.newLine();          	
+		            	
+		            }
+		            
+		            bufferedWriter.close();
+		        }
+		        catch(IOException ex) {
+		            System.out.println("Error writing to file '" + fileOutput + "'");
+		        }
+		  }
 	}
+}
 	
 	private void MartianTime() {
 		// Declare private variables
@@ -275,20 +307,39 @@ public class main {
 			marsTime *= 60;
 			marsSeconds = (int)marsTime;
 			
-			//System.out.println(marsTime);
-			if (marsHours < 10) {
-				System.out.println("Day: " + marsDays + ", 0" + marsHours + ":" + marsMinutes + "." + marsSeconds);
-			}
-			else if (marsMinutes < 10) {
-				System.out.println("Day: " + marsDays + ", " + marsHours + ":0" + marsMinutes + "." + marsSeconds);
-			}
-			else {
-				System.out.println("Day: " + marsDays + ", " + marsHours + ":" + marsMinutes + "." + marsSeconds);
-			}
+			printMarsDays.add(marsDays);
+			printMarsHours.add(marsHours);
+			printMarsMinutes.add(marsMinutes);
+			printMarsSeconds.add(marsSeconds);
 			
 			data.remove(0);
 			if (data.size() > 0) {
 				MartianTime();
+			}
+			else {	
+				try {
+		            FileWriter fileWriter = new FileWriter(fileOutput);
+		            
+		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		            for (int i = 0; i < printMarsDays.size(); i++) {
+		            	if (printMarsHours.get(i) < 10) {
+			            	bufferedWriter.write("Day: " + printMarsDays.get(i) + ", 0" + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+
+						}
+						else if (printMarsMinutes.get(i) < 10) {
+							bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":0" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+						}
+						else {
+							bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+						}
+		            	bufferedWriter.newLine();
+		            }
+		            
+		            bufferedWriter.close();
+		        }
+		        catch(IOException ex) {
+		            System.out.println("Error writing to file '" + fileOutput + "'");
+		        }
 			}
 		}
 	}
