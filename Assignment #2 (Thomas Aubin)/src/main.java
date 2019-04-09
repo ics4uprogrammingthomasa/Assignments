@@ -238,44 +238,58 @@ public class main {
 		int marsMinutes = 0;
 		int marsSeconds = 0;
 		
-		earth = Arrays.asList(data.get(0).split(" "));
-		
-		earthTime = Double.parseDouble(earth.get(2));
-		earthTime /= 60;
-		
-		earthTime += Double.parseDouble(earth.get(1));
-		earthTime /= 24;
-		
-		earthTime += Double.parseDouble(earth.get(0));
-		//earthTime *= 60;
-		
-		
-		
-		marsTime = earthTime * EARTHTOMARS;
-		
-		//marsTime /= 60;
-		//marsTime /= 60;
-		//marsTime /= 24;
-		
-		marsDays = (int)marsTime;
-		marsTime -= marsDays;
-		
-		marsTime *= 24;
-		marsHours = (int)marsTime;
-		marsTime -= marsHours;
-		
-		
-		marsTime *= 60;
-		marsMinutes = (int)marsTime;
-		marsTime -= marsMinutes;
-		
-		marsTime *= 60;
-		marsSeconds = (int)marsTime;
-		
-		//System.out.println(marsTime);
-		System.out.println(marsDays);
-		System.out.println(marsHours);
-		System.out.println(marsMinutes);
-		System.out.println(marsSeconds);
+		// If data has nothing in it
+		if (data.size() == 0) {
+			// Tell user to load data first
+			System.out.println("Please load data first");
+		}
+		// Else, run Willow's Wild Ride
+		else {
+			earth = Arrays.asList(data.get(0).split(" "));
+			
+			earthTime = Double.parseDouble(earth.get(2));
+			earthTime /= 60;
+			
+			earthTime += Double.parseDouble(earth.get(1));
+			earthTime /= 24;
+			
+			earthTime += Double.parseDouble(earth.get(0));
+			
+			earthTime -= 1;
+			
+			
+			marsTime = earthTime * EARTHTOMARS;
+			
+			marsDays = (int)marsTime;
+			marsTime -= marsDays;
+			marsDays += 1;
+			
+			marsTime *= 24;
+			marsHours = (int)marsTime;
+			marsTime -= marsHours;
+			
+			marsTime *= 60;
+			marsMinutes = (int)marsTime;
+			marsTime -= marsMinutes;
+			
+			marsTime *= 60;
+			marsSeconds = (int)marsTime;
+			
+			//System.out.println(marsTime);
+			if (marsHours < 10) {
+				System.out.println("Day: " + marsDays + ", 0" + marsHours + ":" + marsMinutes + "." + marsSeconds);
+			}
+			else if (marsMinutes < 10) {
+				System.out.println("Day: " + marsDays + ", " + marsHours + ":0" + marsMinutes + "." + marsSeconds);
+			}
+			else {
+				System.out.println("Day: " + marsDays + ", " + marsHours + ":" + marsMinutes + "." + marsSeconds);
+			}
+			
+			data.remove(0);
+			if (data.size() > 0) {
+				MartianTime();
+			}
+		}
 	}
 }
