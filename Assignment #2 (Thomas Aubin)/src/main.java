@@ -16,15 +16,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 // Add list library
 import java.util.*;
 // Add text file management library
 import java.io.*;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
+import java.awt.Component;
+
 
 
 public class main {
@@ -45,7 +47,9 @@ public class main {
 	// Pass Or Fail Print Lists
 	List<Integer> printPassed = new ArrayList<Integer>();
 
+	JLabel lblOutput;
 	private JFrame frame;
+	private JTextField txtFileName;
 
 	/**
 	 * Launch the application.
@@ -85,7 +89,7 @@ public class main {
 				fetchData();
 			}
 		});
-		btnLoadData.setBounds(168, 22, 108, 23);
+		btnLoadData.setBounds(250, 35, 108, 23);
 		frame.getContentPane().add(btnLoadData);
 		
 		JButton btnPassOrFail = new JButton("Pass Or Fail");
@@ -115,21 +119,32 @@ public class main {
 		btnMartianTime.setBounds(10, 184, 108, 23);
 		frame.getContentPane().add(btnMartianTime);
 		
-		JLabel lblPleaseLoadData = new JLabel("Please Load Data And Press Program");
-		lblPleaseLoadData.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblPleaseLoadData.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPleaseLoadData.setBounds(221, 121, 203, 86);
-		frame.getContentPane().add(lblPleaseLoadData);
+		lblOutput = new JLabel("Please Load Data And Press Program");
+		lblOutput.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblOutput.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOutput.setBounds(171, 94, 263, 111);
+		frame.getContentPane().add(lblOutput);
+		
+		txtFileName = new JTextField();
+		txtFileName.setBounds(10, 36, 146, 20);
+		frame.getContentPane().add(txtFileName);
+		txtFileName.setColumns(10);
+		
+		JLabel lblFileName = new JLabel("File Name:");
+		lblFileName.setBounds(10, 11, 78, 14);
+		frame.getContentPane().add(lblFileName);
 	}
 	
 	private void fetchData() {
-		String fileName = "PassOrFail.txt";
+		String fileName;
+		
+		fileName = txtFileName.getText();
 
         String line = null;
         data.clear();
 
         try {
-            FileReader fileReader =  new FileReader(fileName);
+            FileReader fileReader =  new FileReader(fileName + ".txt");
 
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
@@ -137,14 +152,24 @@ public class main {
             	data.add(line);
             }   
 
-            bufferedReader.close();         
+            bufferedReader.close();   
+            
+            lblOutput.setText("Loaded '" + fileName + "'");
         }
         catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");                
+        	if (fileName.length() == 0) {
+        		lblOutput.setText("Unable to open file");
+        		
+        	}
+        	else {
+        		lblOutput.setText("Unable to open file '" + fileName + "'");
+        		System.out.print(fileName);
+        	}
         }
         catch(IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");                  
+        	lblOutput.setText("Error reading file '" + fileName + "'");                  
         }
+        
 	}
 	
 	private void PassOrFail() {
@@ -159,7 +184,7 @@ public class main {
 		// If data has nothing in it
 		if (data.size() == 0) {
 			// Tell user to load data first
-			System.out.println("Please load data first");
+			lblOutput.setText("Please load data first");
 		}
 		// Else, run Pass Or Fail
 		else {
@@ -188,30 +213,32 @@ public class main {
 			}
 			
 			printPassed.add(passed);
-		}
-		
-		data.subList(0, students+2).clear();
-		if (data.size() > 0) {
-			PassOrFail();
-		}
-		else {
-			try {
-	            FileWriter fileWriter = new FileWriter(fileOutput);
+			
+			data.subList(0, students+2).clear();
+			if (data.size() > 0) {
+				PassOrFail();
+			}
+			else {
+				try {
+		            FileWriter fileWriter = new FileWriter(fileOutput);
 
-	            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-	            for (int i = 0; i < printPassed.size(); i++) {
-	            	bufferedWriter.write(String.valueOf(printPassed.get(i)));
+		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		            for (int i = 0; i < printPassed.size(); i++) {
+		            	bufferedWriter.write(String.valueOf(printPassed.get(i)));
+			            
+		            	bufferedWriter.newLine();          	
+		            	
+		            }
 		            
-	            	bufferedWriter.newLine();          	
-	            	
-	            }
-	            
-	            bufferedWriter.close();
-	        }
-	        catch(IOException ex) {
-	            System.out.println("Error writing to file '" + fileOutput + "'");
-	        }
-	  }
+		            bufferedWriter.close();
+		            
+		            lblOutput.setText("Successfully Executed And Outputed Pass Or Fail");
+		        }
+		        catch(IOException ex) {
+		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
+		        }
+		  }
+		}
 }
 	
 	private void WillowsWildRide() {
@@ -228,7 +255,7 @@ public class main {
 		// If data has nothing in it
 		if (data.size() == 0) {
 			// Tell user to load data first
-			System.out.println("Please load data first");
+			lblOutput.setText("Please load data first");
 		}
 		// Else, run Willow's Wild Ride
 		else {
@@ -282,9 +309,11 @@ public class main {
 		            }
 		            
 		            bufferedWriter.close();
+		            
+		            lblOutput.setText("Successfully Executed And Outputed");
 		        }
 		        catch(IOException ex) {
-		            System.out.println("Error writing to file '" + fileOutput + "'");
+		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
 		        }
 		  }
 	}
@@ -304,7 +333,7 @@ public class main {
 		// If data has nothing in it
 		if (data.size() == 0) {
 			// Tell user to load data first
-			System.out.println("Please load data first");
+			lblOutput.setText("Please load data first");
 		}
 		// Else, run Willow's Wild Ride
 		else {
@@ -367,9 +396,11 @@ public class main {
 		            }
 		            
 		            bufferedWriter.close();
+		            
+		            lblOutput.setText("Successfully Executed And Outputed");
 		        }
 		        catch(IOException ex) {
-		            System.out.println("Error writing to file '" + fileOutput + "'");
+		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
 		        }
 			}
 		}
