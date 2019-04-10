@@ -21,6 +21,10 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 // Add text file management library
 import java.io.*;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 
 public class main {
@@ -37,6 +41,9 @@ public class main {
 	
 	// Willow's Wild Ride Print Lists
 	List<Integer> printDaysLate = new ArrayList<Integer>();
+	
+	// Pass Or Fail Print Lists
+	List<Integer> printPassed = new ArrayList<Integer>();
 
 	private JFrame frame;
 
@@ -78,7 +85,7 @@ public class main {
 				fetchData();
 			}
 		});
-		btnLoadData.setBounds(163, 49, 89, 23);
+		btnLoadData.setBounds(168, 22, 108, 23);
 		frame.getContentPane().add(btnLoadData);
 		
 		JButton btnPassOrFail = new JButton("Pass Or Fail");
@@ -87,7 +94,7 @@ public class main {
 				PassOrFail();
 			}
 		});
-		btnPassOrFail.setBounds(10, 166, 89, 23);
+		btnPassOrFail.setBounds(10, 93, 133, 23);
 		frame.getContentPane().add(btnPassOrFail);
 		
 		JButton btnWillowsWildRide = new JButton("Willow's Wild Ride");
@@ -96,7 +103,7 @@ public class main {
 				WillowsWildRide();
 			}
 		});
-		btnWillowsWildRide.setBounds(153, 166, 122, 23);
+		btnWillowsWildRide.setBounds(10, 138, 152, 23);
 		frame.getContentPane().add(btnWillowsWildRide);
 		
 		JButton btnMartianTime = new JButton("Martian Time");
@@ -105,12 +112,18 @@ public class main {
 				MartianTime();
 			}
 		});
-		btnMartianTime.setBounds(316, 166, 108, 23);
+		btnMartianTime.setBounds(10, 184, 108, 23);
 		frame.getContentPane().add(btnMartianTime);
+		
+		JLabel lblPleaseLoadData = new JLabel("Please Load Data And Press Program");
+		lblPleaseLoadData.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblPleaseLoadData.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPleaseLoadData.setBounds(221, 121, 203, 86);
+		frame.getContentPane().add(lblPleaseLoadData);
 	}
 	
 	private void fetchData() {
-		String fileName = "Willow's Wild Ride.txt";
+		String fileName = "PassOrFail.txt";
 
         String line = null;
         data.clear();
@@ -174,14 +187,32 @@ public class main {
 				currentMark = 0;
 			}
 			
-			System.out.println(passed);
+			printPassed.add(passed);
 		}
 		
 		data.subList(0, students+2).clear();
 		if (data.size() > 0) {
 			PassOrFail();
 		}
-	}
+		else {
+			try {
+	            FileWriter fileWriter = new FileWriter(fileOutput);
+
+	            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+	            for (int i = 0; i < printPassed.size(); i++) {
+	            	bufferedWriter.write(String.valueOf(printPassed.get(i)));
+		            
+	            	bufferedWriter.newLine();          	
+	            	
+	            }
+	            
+	            bufferedWriter.close();
+	        }
+	        catch(IOException ex) {
+	            System.out.println("Error writing to file '" + fileOutput + "'");
+	        }
+	  }
+}
 	
 	private void WillowsWildRide() {
 		// Declare local variables
