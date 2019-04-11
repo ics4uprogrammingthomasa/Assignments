@@ -20,12 +20,13 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Component;
 
 // Add list library
 import java.util.*;
 // Add text file management library
 import java.io.*;
-import java.awt.Component;
+
 
 
 
@@ -35,18 +36,24 @@ public class main {
 	List<String> data = new ArrayList<String>();
 	String fileOutput = "Output.txt";
 	
-	// Martian Time Print Lists
+	// Declare Martian Time Print Lists
 	List<Integer> printMarsDays = new ArrayList<Integer>();
 	List<Integer> printMarsHours = new ArrayList<Integer>();
 	List<Integer> printMarsMinutes = new ArrayList<Integer>();
 	List<Integer> printMarsSeconds = new ArrayList<Integer>();
 	
-	// Willow's Wild Ride Print Lists
+	// Declare Willow's Wild Ride Print Lists
 	List<Integer> printDaysLate = new ArrayList<Integer>();
+	List<Integer> printTotalTime = new ArrayList<Integer>();
+	List<Integer> printTotalBoxes= new ArrayList<Integer>();
+	List<Integer> printBoredCat= new ArrayList<Integer>();
 	
-	// Pass Or Fail Print Lists
+	// Declare Pass Or Fail Print Lists
 	List<Integer> printPassed = new ArrayList<Integer>();
-
+	List<Integer> printClassAverge = new ArrayList<Integer>();
+	List<Integer> printHonourRoll = new ArrayList<Integer>();
+	
+	// Declare Global List
 	JLabel lblOutput;
 	private JFrame frame;
 	private JTextField txtFileName;
@@ -173,236 +180,289 @@ public class main {
 	}
 	
 	private void PassOrFail() {
-		// Declare local variables
-		List<String> grading = new ArrayList<String>();
-		int students = 0;
-		List<String> studentMarks = new ArrayList<String>();
-		List<String> currentStudent = new ArrayList<String>();
-		double currentMark = 0;
-		int passed = 0;
-		
-		// If data has nothing in it
-		if (data.size() == 0) {
-			// Tell user to load data first
-			lblOutput.setText("Please load data first");
-		}
-		// Else, run Pass Or Fail
-		else {
-			// Load first line, grading, and split by spaces
-			grading = Arrays.asList(data.get(0).split(" "));
-			// Load second line, students, as integer
-			students = Integer.parseInt(data.get(1));
+		try {
+			// Declare local variables
+			List<String> grading = new ArrayList<String>();
+			int students = 0;
+			List<String> studentMarks = new ArrayList<String>();
+			List<String> currentStudent = new ArrayList<String>();
+			double currentMark = 0;
+			int passed = 0;
+			int classAverage = 0;
+			int honourRoll = 0;
 			
-			for(int i = 0; i < students; i++) {
-				studentMarks.add(data.get(i+2));
+			// If data has nothing in it
+			if (data.size() == 0) {
+				// Tell user to load data first
+				lblOutput.setText("Please load data first");
 			}
-			
-			for (int i = 0; i < studentMarks.size(); i++) {
-				currentStudent = Arrays.asList(studentMarks.get(i).split(" "));
+			// Else, run Pass Or Fail
+			else {
+				// Load first line, grading, and split by spaces
+				grading = Arrays.asList(data.get(0).split(" "));
+				// Load second line, students, as integer
+				students = Integer.parseInt(data.get(1));
 				
-				currentMark += Integer.parseInt(currentStudent.get(0)) * (Double.parseDouble(grading.get(0)) / 100);
-				currentMark += Integer.parseInt(currentStudent.get(1)) * (Double.parseDouble(grading.get(1)) / 100);
-				currentMark += Integer.parseInt(currentStudent.get(2)) * (Double.parseDouble(grading.get(2)) / 100);
-				currentMark += Integer.parseInt(currentStudent.get(3)) * (Double.parseDouble(grading.get(3)) / 100);
-				
-				if (currentMark > 50) {
-					passed++;
+				for(int i = 0; i < students; i++) {
+					studentMarks.add(data.get(i+2));
 				}
 				
-				currentMark = 0;
-			}
-			
-			printPassed.add(passed);
-			
-			data.subList(0, students+2).clear();
-			if (data.size() > 0) {
-				PassOrFail();
-			}
-			else {
-				try {
-		            FileWriter fileWriter = new FileWriter(fileOutput);
+				for (int i = 0; i < studentMarks.size(); i++) {
+					currentStudent = Arrays.asList(studentMarks.get(i).split(" "));
+					
+					currentMark += Integer.parseInt(currentStudent.get(0)) * (Double.parseDouble(grading.get(0)) / 100);
+					currentMark += Integer.parseInt(currentStudent.get(1)) * (Double.parseDouble(grading.get(1)) / 100);
+					currentMark += Integer.parseInt(currentStudent.get(2)) * (Double.parseDouble(grading.get(2)) / 100);
+					currentMark += Integer.parseInt(currentStudent.get(3)) * (Double.parseDouble(grading.get(3)) / 100);
+					
+					if (currentMark > 50) {
+						passed++;
+					}
+					
+					if (currentMark > 80) {
+						honourRoll++;
+					}
+					
+					classAverage += currentMark;
+					
+					currentMark = 0;
+				}
+				
+				classAverage /= students;
+				
+				printClassAverge.add(classAverage);
+				printPassed.add(passed);
+				printHonourRoll.add(honourRoll);
+				
+				data.subList(0, students+2).clear();
+				if (data.size() > 0) {
+					PassOrFail();
+				}
+				else {
+					try {
+			            FileWriter fileWriter = new FileWriter(fileOutput);
 
-		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-		            for (int i = 0; i < printPassed.size(); i++) {
-		            	bufferedWriter.write(String.valueOf(printPassed.get(i)));
+			            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			            for (int i = 0; i < printPassed.size(); i++) {
+			            	bufferedWriter.write("Students Passed: ");
+			            	bufferedWriter.write(String.valueOf(printPassed.get(i)));
+			            	bufferedWriter.write(" --- Class Average: ");
+			            	bufferedWriter.write(String.valueOf(printClassAverge.get(i)));
+			            	bufferedWriter.write(" --- Honour Roll: ");
+			            	bufferedWriter.write(String.valueOf(printHonourRoll.get(i)));
+				            
+			            	bufferedWriter.newLine();          	
+			            	
+			            }
 			            
-		            	bufferedWriter.newLine();          	
-		            	
-		            }
-		            
-		            bufferedWriter.close();
-		            
-		            lblOutput.setText("Successfully Executed And Outputed Pass Or Fail");
-		        }
-		        catch(IOException ex) {
-		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
-		        }
-		  }
+			            bufferedWriter.close();
+			            
+			            lblOutput.setText("Successfully Executed And Outputed Pass Or Fail");
+			        }
+			        catch(IOException ex) {
+			        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
+			        }
+			  }
+			}
+		}
+		catch(Exception e) {
+			lblOutput.setText("Incorrect Data Or Program");
 		}
 }
 	
 	private void WillowsWildRide() {
-		// Declare local variables
-		List<String> firstLine = new ArrayList<String>();
-		int playDays = 0;
-		int dueDate = 0;
-		List<String> days = new ArrayList<String>();
-		int boxes = 0;
-		int counter = 0;
-		int daysLate = 0;
-		
-		
-		// If data has nothing in it
-		if (data.size() == 0) {
-			// Tell user to load data first
-			lblOutput.setText("Please load data first");
-		}
-		// Else, run Willow's Wild Ride
-		else {
-			firstLine = Arrays.asList(data.get(0).split(" "));
+		try {
+			// Declare local variables
+			List<String> firstLine = new ArrayList<String>();
+			int playDays = 0;
+			int dueDate = 0;
+			List<String> days = new ArrayList<String>();
+			int boxes = 0;
+			int counter = 0;
+			int daysLate = 0;
+			int totalTime = 0;
+			int totalBoxes = 0;
+			int boredCat = 0;
 			
-			playDays = Integer.parseInt(firstLine.get(0));
-			dueDate = Integer.parseInt(firstLine.get(1));
 			
-			for (int i = 0; i < dueDate; i++) {
-				days.add(data.get(i+1));
+			// If data has nothing in it
+			if (data.size() == 0) {
+				// Tell user to load data first
+				lblOutput.setText("Please load data first");
 			}
-			
-			for(int currentDay = 0; currentDay < dueDate; currentDay++) {
-				if (days.get(currentDay).charAt(0) == 'B') {
-					boxes++;
-				}
-				if (boxes > 0) {
-					counter++;
-				}
-				if (counter == playDays) {
-					counter = 0;
-					boxes--;
-				}
-			}
-			
-			if (boxes == 0 && counter == 0) {
-				daysLate = 0;
-			}
+			// Else, run Willow's Wild Ride
 			else {
-				daysLate = playDays - counter;
-				boxes--;
-				daysLate += playDays * boxes;
-			}
-			
-			printDaysLate.add(daysLate);
-			
-			data.subList(0, dueDate+1).clear();
-			if (data.size() > 0) {
-				WillowsWildRide();
-			}
-			else {	
-				try {
-		            FileWriter fileWriter = new FileWriter(fileOutput);
+				firstLine = Arrays.asList(data.get(0).split(" "));
+				
+				playDays = Integer.parseInt(firstLine.get(0));
+				dueDate = Integer.parseInt(firstLine.get(1));
+				
+				for (int i = 0; i < dueDate; i++) {
+					days.add(data.get(i+1));
+				}
+				
+				for(int currentDay = 0; currentDay < dueDate; currentDay++) {
+					if (days.get(currentDay).charAt(0) == 'B') {
+						boxes++;
+						totalBoxes++;
+					}
+					if (boxes > 0) {
+						counter++;
+					}
+					
+					if (counter == 0) {
+						boredCat++;
+					}
+					
+					if (counter == playDays) {
+						counter = 0;
+						boxes--;
+					}
+				}
+				
+				if (boxes == 0 && counter == 0) {
+					daysLate = 0;
+				}
+				else {
+					daysLate = playDays - counter;
+					boxes--;
+					daysLate += playDays * boxes;
+				}
+				
+				totalTime = dueDate + daysLate;
+				
+				printDaysLate.add(daysLate);
+				printTotalTime.add(totalTime);
+				printTotalBoxes.add(totalBoxes);
+				printBoredCat.add(boredCat);
+				
+				data.subList(0, dueDate+1).clear();
+				if (data.size() > 0) {
+					WillowsWildRide();
+				}
+				else {	
+					try {
+			            FileWriter fileWriter = new FileWriter(fileOutput);
 
-		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-		            for (int i = 0; i < printDaysLate.size(); i++) {
-		            	bufferedWriter.write(String.valueOf(printDaysLate.get(i)));
+			            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			            for (int i = 0; i < printDaysLate.size(); i++) {
+			            	bufferedWriter.write("Days Late: ");
+			            	bufferedWriter.write(String.valueOf(printDaysLate.get(i)));
+			            	bufferedWriter.write(" --- Total Days: ");
+			            	bufferedWriter.write(String.valueOf(printTotalTime.get(i)));
+			            	bufferedWriter.write(" --- You Ended With Set Boxes: ");
+			            	bufferedWriter.write(String.valueOf(printTotalBoxes.get(i)));
+			            	bufferedWriter.write(" --- The Cat Was Bored For Set Days: ");
+			            	bufferedWriter.write(String.valueOf(printBoredCat.get(i)));
+				            
+			            	bufferedWriter.newLine();          	
+			            	
+			            }
 			            
-		            	bufferedWriter.newLine();          	
-		            	
-		            }
-		            
-		            bufferedWriter.close();
-		            
-		            lblOutput.setText("Successfully Executed And Outputed");
-		        }
-		        catch(IOException ex) {
-		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
-		        }
-		  }
-	}
+			            bufferedWriter.close();
+			            
+			            lblOutput.setText("Successfully Executed And Outputed");
+			        }
+			        catch(IOException ex) {
+			        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
+			        }
+			  }
+			}
+		}
+		catch(Exception e) {
+			lblOutput.setText("Incorrect Data Or Program");
+		}
 }
 	
 	private void MartianTime() {
-		// Declare private variables
-		List<String> earth = new ArrayList<String>();
-		double EARTHTOMARS = 86400/88642.663;
-		double earthTime = 0;
-		double marsTime = 0;
-		int marsDays = 0;
-		int marsHours = 0;
-		int marsMinutes = 0;
-		int marsSeconds = 0;
-		
-		// If data has nothing in it
-		if (data.size() == 0) {
-			// Tell user to load data first
-			lblOutput.setText("Please load data first");
-		}
-		// Else, run Willow's Wild Ride
-		else {
-			earth = Arrays.asList(data.get(0).split(" "));
+		try {
+			// Declare private variables
+			List<String> earth = new ArrayList<String>();
+			double EARTHTOMARS = 86400/88642.663;
+			double earthTime = 0;
+			double marsTime = 0;
+			int marsDays = 0;
+			int marsHours = 0;
+			int marsMinutes = 0;
+			int marsSeconds = 0;
 			
-			earthTime = Double.parseDouble(earth.get(2));
-			earthTime /= 60;
-			
-			earthTime += Double.parseDouble(earth.get(1));
-			earthTime /= 24;
-			
-			earthTime += Double.parseDouble(earth.get(0));
-			
-			earthTime -= 1;
-			
-			
-			marsTime = earthTime * EARTHTOMARS;
-			
-			marsDays = (int)marsTime;
-			marsTime -= marsDays;
-			marsDays += 1;
-			
-			marsTime *= 24;
-			marsHours = (int)marsTime;
-			marsTime -= marsHours;
-			
-			marsTime *= 60;
-			marsMinutes = (int)marsTime;
-			marsTime -= marsMinutes;
-			
-			marsTime *= 60;
-			marsSeconds = (int)marsTime;
-			
-			printMarsDays.add(marsDays);
-			printMarsHours.add(marsHours);
-			printMarsMinutes.add(marsMinutes);
-			printMarsSeconds.add(marsSeconds);
-			
-			data.remove(0);
-			if (data.size() > 0) {
-				MartianTime();
+			// If data has nothing in it
+			if (data.size() == 0) {
+				// Tell user to load data first
+				lblOutput.setText("Please load data first");
 			}
-			else {	
-				try {
-		            FileWriter fileWriter = new FileWriter(fileOutput);
-		            
-		            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-		            for (int i = 0; i < printMarsDays.size(); i++) {
-		            	if (printMarsHours.get(i) < 10) {
-			            	bufferedWriter.write("Day: " + printMarsDays.get(i) + ", 0" + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+			// Else, run Willow's Wild Ride
+			else {
+				earth = Arrays.asList(data.get(0).split(" "));
+				
+				earthTime = Double.parseDouble(earth.get(2));
+				earthTime /= 60;
+				
+				earthTime += Double.parseDouble(earth.get(1));
+				earthTime /= 24;
+				
+				earthTime += Double.parseDouble(earth.get(0));
+				
+				earthTime -= 1;
+				
+				
+				marsTime = earthTime * EARTHTOMARS;
+				
+				marsDays = (int)marsTime;
+				marsTime -= marsDays;
+				marsDays += 1;
+				
+				marsTime *= 24;
+				marsHours = (int)marsTime;
+				marsTime -= marsHours;
+				
+				marsTime *= 60;
+				marsMinutes = (int)marsTime;
+				marsTime -= marsMinutes;
+				
+				marsTime *= 60;
+				marsSeconds = (int)marsTime;
+				
+				printMarsDays.add(marsDays);
+				printMarsHours.add(marsHours);
+				printMarsMinutes.add(marsMinutes);
+				printMarsSeconds.add(marsSeconds);
+				
+				data.remove(0);
+				if (data.size() > 0) {
+					MartianTime();
+				}
+				else {	
+					try {
+			            FileWriter fileWriter = new FileWriter(fileOutput);
+			            
+			            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			            for (int i = 0; i < printMarsDays.size(); i++) {
+			            	if (printMarsHours.get(i) < 10) {
+				            	bufferedWriter.write("Day: " + printMarsDays.get(i) + ", 0" + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
 
-						}
-						else if (printMarsMinutes.get(i) < 10) {
-							bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":0" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
-						}
-						else {
-							bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
-						}
-		            	bufferedWriter.newLine();
-		            }
-		            
-		            bufferedWriter.close();
-		            
-		            lblOutput.setText("Successfully Executed And Outputed");
-		        }
-		        catch(IOException ex) {
-		        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
-		        }
+							}
+							else if (printMarsMinutes.get(i) < 10) {
+								bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":0" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+							}
+							else {
+								bufferedWriter.write("Day: " + printMarsDays.get(i) + ", " + printMarsHours.get(i) + ":" + printMarsMinutes.get(i) + "." + printMarsSeconds.get(i));
+							}
+			            	bufferedWriter.newLine();
+			            }
+			            
+			            bufferedWriter.close();
+			            
+			            lblOutput.setText("Successfully Executed And Outputed");
+			        }
+			        catch(IOException ex) {
+			        	lblOutput.setText("Error writing to file '" + fileOutput + "'");
+			        }
+				}
 			}
+		}
+		catch(Exception e) {
+			lblOutput.setText("Incorrect Data Or Program");
 		}
 	}
 }
