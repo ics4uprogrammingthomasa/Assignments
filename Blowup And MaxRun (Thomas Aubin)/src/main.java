@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 
 // Add file reading
 import java.io.*;
+//Add list library
+import java.util.*;
 
 public class main {
 
@@ -113,22 +115,38 @@ public class main {
 	}
 	
 	private void MaxRun(String data) {
-		char[] chars = data.toCharArray();
-		char[] word = new char[1];
-		int counter = 0;
-		int[] counts = new int[1];
 		
-		for (int i = 0; i < chars.length-1; i++){
-			if (chars[i] == chars[i+1]) {
-				counter++;
+		char[] chars = data.toCharArray();
+		
+		List<Character> letter = new ArrayList<Character>();
+		List<Integer> count = new ArrayList<Integer>();
+		
+		int currentCount = 1;
+		
+		for (int i = 0; i < chars.length; i++) {
+			try {
+				if (chars[i] == chars[i+1]) {
+					currentCount++;
+				}
+				else {
+					letter.add(chars[i]);
+					count.add(currentCount);
+					
+					currentCount = 1;
+				}
 			}
-			else {
-				counts[counts.length] = counter;
-				counter = 0;
-				word[word.length] = chars[i];
+			catch(Exception e) {
+				letter.add(chars[i]);
+				count.add(currentCount);
+				
+				currentCount = 1;
 			}
 		}
 		
+		for (int i = 0; i < letter.size(); i++) {
+			int maxCount = Collections.max(count);
+			int maxCountLocation = count.getIndexOf(maxCount);
+		}
 	}
 	
 	private void FetchData() {		
