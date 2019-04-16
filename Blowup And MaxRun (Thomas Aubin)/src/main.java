@@ -1,3 +1,11 @@
+/*
+ * Created by: Thomas Aubin
+ * Created on: April 16, 2019
+ * Created for: ICS4U Programming
+ * Assignment #1 - Blowup and Max Run
+ * This program solves blowup compression and also solves how many times a letter was repeated
+*/
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
