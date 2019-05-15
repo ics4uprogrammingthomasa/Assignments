@@ -27,9 +27,10 @@ public class main {
 	boolean finished = false;
 
 	// Declare JFrame objects
-	private JFrame frame;	
+	private JFrame frmBubbleSort;	
 	java.awt.List listGeneratedData = new java.awt.List();
 	java.awt.List listSortedData = new java.awt.List();
+	JButton btnSort = new JButton("Sort");
 
 	/**
 	 * Launch the application.
@@ -39,7 +40,7 @@ public class main {
 			public void run() {
 				try {
 					main window = new main();
-					window.frame.setVisible(true);
+					window.frmBubbleSort.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,19 +59,20 @@ public class main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 473, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmBubbleSort = new JFrame();
+		frmBubbleSort.setTitle("Bubble Sort - By Thomas Aubin");
+		frmBubbleSort.setBounds(100, 100, 473, 300);
+		frmBubbleSort.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBubbleSort.getContentPane().setLayout(null);
 		listGeneratedData.setFont(null);
 		
 		listGeneratedData.setBounds(114, 45, 110, 205);
-		frame.getContentPane().add(listGeneratedData);
+		frmBubbleSort.getContentPane().add(listGeneratedData);
 		
 		JLabel lblGeneratedData = new JLabel("Generated Data");
 		lblGeneratedData.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblGeneratedData.setBounds(125, 25, 91, 14);
-		frame.getContentPane().add(lblGeneratedData);
+		frmBubbleSort.getContentPane().add(lblGeneratedData);
 		
 		JButton btnGenerate = new JButton("Generate ");
 		btnGenerate.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -81,14 +83,14 @@ public class main {
 			}
 		});
 		btnGenerate.setBounds(10, 127, 89, 23);
-		frame.getContentPane().add(btnGenerate);
+		frmBubbleSort.getContentPane().add(btnGenerate);
 		
 		JLabel lblSortedData = new JLabel("Sorted Data");
 		lblSortedData.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblSortedData.setBounds(364, 25, 65, 14);
-		frame.getContentPane().add(lblSortedData);
+		frmBubbleSort.getContentPane().add(lblSortedData);
+		btnSort.setEnabled(false);
 		
-		JButton btnSort = new JButton("Sort");
 		btnSort.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,57 +99,76 @@ public class main {
 			}
 		});
 		btnSort.setBounds(236, 127, 89, 23);
-		frame.getContentPane().add(btnSort);
+		frmBubbleSort.getContentPane().add(btnSort);
 		
 		listSortedData.setFont(null);
 		listSortedData.setBounds(331, 45, 110, 205);
-		frame.getContentPane().add(listSortedData);	
+		frmBubbleSort.getContentPane().add(listSortedData);	
 	}
 	
+	// Generate random numbers function
 	public void Generate() {
 		
 		// Declare random number generator
 		Random rand = new Random();
 		
+		// Repeat for loop 250 times
 		for (int i = 0; i < 250; i++) {
+			// Add 250 random number to list
 			data.add(rand.nextInt(250));
 		}
 		
+		// Add random numbers to list on GUI
 		for (int i = 0; i < 250; i++) {
 			listGeneratedData.add(Integer.toString(data.get(i)));
 		}
-				
-		System.out.println(data);
+		
+		// Enable sorting function after generating data
+		btnSort.setEnabled(true);
 	}
 	
+	// Sort random numbers function
 	public void Sort() {
+		// Declare local variables
 		int count = 0;
 		int moveValue;
 		
+		// Repeat until set false in loop
 		while(finished == false) {
-			// Declare local variables
+			// Set count to zero
 			count = 0;
 			
-			for (int currentIndex = 0; currentIndex < data.size()-2; currentIndex++) {
+			// Repeat for length of data
+			for (int currentIndex = 0; currentIndex < data.size()-1; currentIndex++) {
+				// Temporarily variable to store number being sorted
 				moveValue = 0;
 				
+				// If current index is greater then next index
 				if (data.get(currentIndex) > data.get(currentIndex+1)) {
+					// Save current index value
 					moveValue = data.get(currentIndex);
 					
+					// Remove current index
 					data.remove(currentIndex);
 					
-					data.add(moveValue, currentIndex+1);
+					// Place stored current index and place it one index higher
+					data.add(currentIndex+1, moveValue);
 					
+					// Increase count
 					count++;
 				}
 			}
-					
+			
+			// If count is zero (No longer sorting any numbers)
 			if (count == 0) {
+				// Set finished to true to end loop
 				finished = true;
 			}
 		}
 		
+		// Repeat for 250 times
 		for (int i = 0; i < 250; i++) {
+			// Add data to sorted data list on GUI
 			listSortedData.add(Integer.toString(data.get(i)));
 		}
 	}
