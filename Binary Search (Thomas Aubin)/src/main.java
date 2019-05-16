@@ -19,6 +19,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class main {
 	
@@ -31,7 +32,10 @@ public class main {
 	java.awt.List listGeneratedData = new java.awt.List();
 	java.awt.List listSortedData = new java.awt.List();
 	JButton btnSort = new JButton("Sort");
-
+	private JTextField txtFindNumber;
+	JButton btnFindNumber = new JButton("Find Number:");
+	JLabel lblFindNumber = new JLabel("");
+	
 	/**
 	 * Launch the application.
 	 */
@@ -61,7 +65,7 @@ public class main {
 	private void initialize() {
 		frmBubbleSort = new JFrame();
 		frmBubbleSort.setTitle("Bubble Sort - By Thomas Aubin");
-		frmBubbleSort.setBounds(100, 100, 473, 300);
+		frmBubbleSort.setBounds(100, 100, 473, 450);
 		frmBubbleSort.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBubbleSort.getContentPane().setLayout(null);
 		listGeneratedData.setFont(null);
@@ -78,7 +82,7 @@ public class main {
 		btnGenerate.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Call Generate Function
+				// Call Generate function
 				Generate();
 			}
 		});
@@ -94,7 +98,7 @@ public class main {
 		btnSort.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnSort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Call Sort Function
+				// Call Sort function
 				Sort();
 			}
 		});
@@ -104,10 +108,32 @@ public class main {
 		listSortedData.setFont(null);
 		listSortedData.setBounds(331, 45, 110, 205);
 		frmBubbleSort.getContentPane().add(listSortedData);	
+		
+		txtFindNumber = new JTextField();
+		txtFindNumber.setEnabled(false);
+		txtFindNumber.setBounds(140, 340, 99, 20);
+		frmBubbleSort.getContentPane().add(txtFindNumber);
+		txtFindNumber.setColumns(10);
+		
+		btnFindNumber.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnFindNumber.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Call Find Number function
+				FindNumber();
+			}
+		});
+		btnFindNumber.setEnabled(false);
+		btnFindNumber.setBounds(20, 339, 110, 23);
+		frmBubbleSort.getContentPane().add(btnFindNumber);
+		lblFindNumber.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		lblFindNumber.setBounds(260, 377, 187, 23);
+		frmBubbleSort.getContentPane().add(lblFindNumber);
 	}
 	
 	// Generate random numbers function
 	public void Generate() {
+		
 		// Clear data and generated list
 		data.clear();
 		listGeneratedData.removeAll();;
@@ -132,6 +158,7 @@ public class main {
 	
 	// Sort random numbers function
 	public void Sort() {
+		
 		// Clear sort list
 		listSortedData.removeAll();
 		
@@ -176,6 +203,46 @@ public class main {
 		for (int i = 0; i < 250; i++) {
 			// Add data to sorted data list on GUI
 			listSortedData.add(Integer.toString(data.get(i)));
+		}
+		
+		// Enable finding number in sorted list
+		btnFindNumber.setEnabled(true);
+		txtFindNumber.setEnabled(true);
+	}
+	
+	// Finds if number exists and returns index in list
+	private void FindNumber() {
+		
+		// Declare local variables
+		boolean next = false;
+		int searchingFor = 0;
+		int rangeHigh = 0;
+		int rangeMid = 0;
+		int rangeLow = 0;
+		
+		try {
+			
+			// Fetch number searching for
+			searchingFor = Integer.parseInt(txtFindNumber.getText());
+			
+			// Continue finding number by setting next to true
+			next = true;
+			
+			// Telling user the program is looking for the number
+			lblFindNumber.setText("Finding number...");
+		}
+		catch (Exception e) {
+			
+			// Tell user to input a proper number
+			lblFindNumber.setText("Please Input A Proper Number");
+		}
+		
+		if (next == true) {
+			
+			// Determine start max range
+			rangeHigh = data.size()-1;
+			
+			
 		}
 	}
 }
