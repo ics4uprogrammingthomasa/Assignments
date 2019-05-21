@@ -8,12 +8,6 @@
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-
-//Add list libray
-import java.util.ArrayList;
-import java.util.List;
-//Add number generator
-import java.util.Random;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -21,11 +15,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
+//Add list library
+import java.util.ArrayList;
+import java.util.List;
+//Add number generator
+import java.util.Random;
+
+
 public class main {
 	
 	// Declare global variables
 	List<Integer> data = new ArrayList<Integer>();
-	boolean finished = false;
 
 	// Declare JFrame objects
 	private JFrame frmBubbleSort;	
@@ -159,6 +159,9 @@ public class main {
 	// Sort random numbers function
 	public void Sort() {
 		
+		// Declare local variables
+		boolean finished = false;
+		
 		// Clear sort list
 		listSortedData.removeAll();
 		
@@ -215,7 +218,8 @@ public class main {
 		
 		// Declare local variables
 		boolean next = false;
-		int searchingFor = 0;
+		boolean findFinal = true;
+		int target = 0;
 		int rangeHigh = 0;
 		int rangeMid = 0;
 		int rangeLow = 0;
@@ -223,7 +227,7 @@ public class main {
 		try {
 			
 			// Fetch number searching for
-			searchingFor = Integer.parseInt(txtFindNumber.getText());
+			target = Integer.parseInt(txtFindNumber.getText());
 			
 			// Continue finding number by setting next to true
 			next = true;
@@ -242,7 +246,37 @@ public class main {
 			// Determine start max range
 			rangeHigh = data.size()-1;
 			
+			rangeMid = (data.size()-1) / 2;
 			
+			while (rangeHigh - rangeLow > 2) {
+				
+				if (data.get(rangeMid) == target) {
+					findFinal = false;
+					lblFindNumber.setText("Found " + target + " at index " + rangeMid);
+					break;
+				}
+				else if (data.get(rangeMid) > target) {
+					rangeHigh = rangeMid;
+				}
+				else if (data.get(rangeMid) < target) {
+					rangeLow = rangeMid;
+				}
+				
+				rangeMid = (rangeLow + rangeHigh) / 2;
+			} 
+			
+			if (findFinal == true) {
+				
+				for (int i = 0; i < 3; i++) {
+					if (data.get(rangeLow + i) == target) {
+						lblFindNumber.setText("Found " + target + " at index " + rangeLow+1);
+						break;
+					}
+					if (i == 2) {
+						lblFindNumber.setText("The number " + target + " cannot be found");
+					}
+				}
+			}
 		}
 	}
 }

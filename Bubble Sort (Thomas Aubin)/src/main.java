@@ -24,7 +24,6 @@ public class main {
 	
 	// Declare global variables
 	List<Integer> data = new ArrayList<Integer>();
-	boolean finished = false;
 
 	// Declare JFrame objects
 	private JFrame frmBubbleSort;	
@@ -132,6 +131,9 @@ public class main {
 	
 	// Sort random numbers function
 	public void Sort() {
+		// Declare local variables
+		boolean finished = false;
+		
 		// Clear sort list
 		listSortedData.removeAll();
 		
