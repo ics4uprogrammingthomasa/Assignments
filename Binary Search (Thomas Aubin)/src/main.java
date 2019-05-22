@@ -269,7 +269,7 @@ public class main {
 				
 				for (int i = 0; i < 3; i++) {
 					if (data.get(rangeLow + i) == target) {
-						lblFindNumber.setText("Found " + target + " at index " + rangeLow+1);
+						lblFindNumber.setText("Found " + target + " at index " + (rangeLow + i));
 						break;
 					}
 					if (i == 2) {
