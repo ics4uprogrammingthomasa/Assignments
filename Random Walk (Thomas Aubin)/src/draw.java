@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.util.Random;
 // Add draw color
 import java.awt.Color;
+// Add delay
+import java.util.concurrent.TimeUnit;
 
 
 public class draw extends JFrame {
@@ -19,6 +21,10 @@ public class draw extends JFrame {
 	// Declare global variables
 	int screenSizeX = 450;
 	int screenSizeY = 300;
+	
+	// Declare number generator
+	Random randX = new Random();
+	Random randY = new Random();
 	
 	private JPanel contentPane;
 
@@ -52,10 +58,62 @@ public class draw extends JFrame {
 	
 	public void paint(Graphics g) {
 		
+		// Declare local variables
 		int minX = 8;
 		int minY = 31;
-		int maxX = screenSizeX- 59;
+		int maxX = screenSizeX - 59;
 		int maxY = screenSizeY - 59;
+		int randomX = 0;
+		int randomY = 0;
+		int currentX = 50;
+	    int currentY = 100;
+		
+		while (true) {
+			randomX = randX.nextInt(3);
+			randomY = randY.nextInt(3);
+			
+			if (randomX == 1) {
+				currentX += 1;
+			}
+			if (randomX == 2) {
+				currentX -= 1;
+			}
+			
+			if (randomY == 1) {
+				currentY += 1;
+			}
+			if (randomY == 2) {
+				currentY -= 1;
+			}
+			
+			if (currentX > maxX) {
+				currentX = maxX;
+			}
+			if (currentX < minX) {
+				currentX = minX;
+			}
+			
+			if (currentY > maxY) {
+				currentY = maxY;
+			}
+			if (currentY < minY) {
+				currentY = minY;
+			}
+			
+			g.fillOval(currentX, currentY, 2, 2);
+			/*
+			try
+			{
+			    Thread.sleep(1);
+			}
+			catch(InterruptedException ex)
+			{
+			    Thread.currentThread().interrupt();
+			}
+			*/
+		}
+		
+	    /*
 		
 		//g.fillOval(8, 31, 100, 100);
 		g.fillOval(maxX, maxY, 50, 50);
@@ -71,6 +129,7 @@ public class draw extends JFrame {
 			}
 			
 		}
+		*/
 	}
 
 }
