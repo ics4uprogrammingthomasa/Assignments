@@ -59,14 +59,17 @@ public class draw extends JFrame {
 	public void paint(Graphics g) {
 		
 		// Declare local variables
-		int minX = 8;
-		int minY = 31;
-		int maxX = screenSizeX - 59;
-		int maxY = screenSizeY - 59;
+		int minX = 10;
+		int minY = 32;
+		int maxX = screenSizeX-13;
+		int maxY = screenSizeY-13;
 		int randomX = 0;
 		int randomY = 0;
 		int currentX = 50;
 	    int currentY = 100;
+	    int colorR = 0;
+	    int colorG = 0;
+	    int colorB = 0;
 		
 		while (true) {
 			randomX = randX.nextInt(3);
@@ -101,6 +104,24 @@ public class draw extends JFrame {
 			}
 			
 			g.fillOval(currentX, currentY, 2, 2);
+			
+			if (colorR < 255) {
+				g.setColor(new Color(colorR, colorG, colorB));
+				colorR++;
+			}
+			else if (colorG < 255) {
+				g.setColor(new Color(colorR, colorG, colorB));
+				colorG++;
+			}
+			else if (colorB < 255) {
+				g.setColor(new Color(colorR, colorG, colorB));
+				colorB++;
+			}
+			if (colorB == 255) {
+				colorR = 0;
+				colorG = 0;
+				colorB = 0;
+			}
 			/*
 			try
 			{

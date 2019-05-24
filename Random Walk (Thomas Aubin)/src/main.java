@@ -19,9 +19,17 @@ import javax.swing.JScrollBar;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import java.awt.Color;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class main {
-
+	
+	// Declare Global Variables
+	int formWidth = 200;
+	int formHeight = 200;
+	int targetWidth = 20;
+	int targetHeight = 20;
+	
 	private JFrame frame;
 
 	/**
@@ -87,6 +95,12 @@ public class main {
 		frame.getContentPane().add(btnGenerate);
 		
 		JSpinner nudFormWidth = new JSpinner();
+		nudFormWidth.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				formWidth = (Integer)nudFormWidth.getValue();
+				System.out.println(formWidth);
+			}
+		});
 		nudFormWidth.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nudFormWidth.setBackground(new Color(240, 240, 240));
 		nudFormWidth.setModel(new SpinnerNumberModel(200, 200, 800, 100));
@@ -94,18 +108,33 @@ public class main {
 		frame.getContentPane().add(nudFormWidth);
 		
 		JSpinner nudFormHeight = new JSpinner();
+		nudFormHeight.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				formHeight = (Integer)nudFormHeight.getValue();
+			}
+		});
 		nudFormHeight.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nudFormHeight.setModel(new SpinnerNumberModel(200, 200, 800, 100));
 		nudFormHeight.setBounds(141, 88, 53, 20);
 		frame.getContentPane().add(nudFormHeight);
 		
 		JSpinner nudTargetWidth = new JSpinner();
+		nudTargetWidth.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				targetWidth = (Integer)nudTargetWidth.getValue();
+			}
+		});
 		nudTargetWidth.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nudTargetWidth.setModel(new SpinnerNumberModel(20, 20, 100, 10));
 		nudTargetWidth.setBounds(141, 150, 53, 20);
 		frame.getContentPane().add(nudTargetWidth);
 		
 		JSpinner nudTargetHeight = new JSpinner();
+		nudTargetHeight.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				targetHeight = (Integer)nudTargetHeight.getValue();
+			}
+		});
 		nudTargetHeight.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		nudTargetHeight.setModel(new SpinnerNumberModel(20, 20, 100, 10));
 		nudTargetHeight.setBounds(141, 185, 53, 20);
